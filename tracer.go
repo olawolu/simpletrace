@@ -16,6 +16,8 @@ type tracer struct {
 	out io.Writer
 }
 
+type nilTracer struct{}
+
 func (tr *tracer) Trace(a ...interface{}) {
 	fmt.Fprintln(tr.out, a...)
 }
@@ -23,4 +25,11 @@ func (tr *tracer) Trace(a ...interface{}) {
 // New returns the address to a tracer struct
 func New(w io.Writer) Tracer {
 	return &tracer{out: w}
+}
+
+func (nt *nilTracer) Trace(a ...interface{}) {}
+
+// Off returns a new nilTracer
+func Off() Tracer {
+	return &nilTracer{}
 }
